@@ -1,0 +1,1 @@
+# Simple discord bot to handle Self Roles
