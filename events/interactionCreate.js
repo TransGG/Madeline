@@ -35,11 +35,11 @@ module.exports = async (client, interaction) => {
     if (interaction.isChatInputCommand()) runAction("slash", interaction.commandName)
     if (interaction.isAutocomplete()) runAction("autocomplete", interaction.commandName)
 
-    if(interaction.isModalSubmit() || interaction.isSelectMenu() || interaction.isButton()) {
-        const commandName = interaction.customId.split("/")[0]
-        const args = interaction.customId.split("/").slice(1)
+    if(interaction.isModalSubmit() || interaction.isStringSelectMenu() || interaction.isButton()) {
+        const commandName = interaction.customId.split("|")[0]
+        const args = interaction.customId.split("|").slice(1)
         if (interaction.isModalSubmit()) runAction("modal", commandName, args)
-        if (interaction.isSelectMenu())runAction("select", commandName, args)
+        if (interaction.isStringSelectMenu())runAction("select", commandName, args)
         if (interaction.isButton()) runAction("button", commandName, args)
     }
 

@@ -1,7 +1,7 @@
 {
-  "name": "example-bot",
+  "name": "madeline-discord",
   "version": "1.0.0",
-  "description": "A example discord bot with mongoose integration, a web server, and handlers for most common events.",
+  "description": "Simple discord bot to handle Self Roles.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +11,6 @@
   "license": "LGPL-3.0+",
   "dependencies": {
     "colors": "^1.4.0",
-    "discord.js": "^14.5.0"
+    "discord.js": "^14.7.1"
   }
 }
