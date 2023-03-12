@@ -89,12 +89,12 @@ exports.select = async (client, interaction, args) => {
       .setImage("https://i.imgur.com/t3zhm4k.png")
       .addFields(
         group.roles.map((role) => ({
-          name: `${
+          name: `${role.label}`,
+          value: `${
             role.hasOwnProperty("menuEmojiOverride")
               ? client.emojis.cache.get(role.menuEmojiOverride)
               : client.emojis.cache.get(role.emoji)
-          } ${role.label}`,
-          value: `<@&${role.roleID}>`,
+          } | <@&${role.roleID}>`,
           inline: true,
         }))
       )
@@ -148,7 +148,8 @@ exports.button = async (client, interaction, args) => {
 
   if (args[0] == "close") {
     return interaction.update({
-      content: "Thanks for grabbing some self-roles!\n> *To close this message click the `Dismiss Message` button below.*",
+      content:
+        "Thanks for grabbing some self-roles!\n> *To close this message click the `Dismiss Message` button below.*",
       embeds: [],
       components: [],
       ephemeral: true,
@@ -223,12 +224,12 @@ exports.button = async (client, interaction, args) => {
     .setImage("https://i.imgur.com/t3zhm4k.png")
     .addFields(
       group.roles.map((role) => ({
-        name: `${
+        name: `${role.label}`,
+        value: `${
           role.hasOwnProperty("menuEmojiOverride")
             ? client.emojis.cache.get(role.menuEmojiOverride)
             : client.emojis.cache.get(role.emoji)
-        } ${role.label}`,
-        value: `<@&${role.roleID}>`,
+        } | <@&${role.roleID}>`,
         inline: true,
       }))
     )
