@@ -49,6 +49,23 @@ exports.select = async (client, interaction, args) => {
         .setMaxValues(multiple ? group.roles.length : 1)
     );
 
+    const row2 = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`self-roles|back|${group.value}`)
+        .setLabel("Previous Group")
+        .setStyle("PRIMARY")
+        .setDisabled(group.value == 0),
+      new ButtonBuilder()
+        .setCustomId(`self-roles|close`)
+        .setLabel("Close")
+        .setStyle("DANGER"),
+      new ButtonBuilder()
+        .setCustomId(`self-roles|next|${group.value}`)
+        .setLabel("Next Group")
+        .setStyle("PRIMARY")
+        .setDisabled(group.value == options.length - 1)
+    );
+
     group.roles.map((role) => {
       row.components[0].addOptions({
         default: roles.includes(role.roleID),
@@ -82,7 +99,7 @@ exports.select = async (client, interaction, args) => {
     interaction.reply({
       content: `Add/Remove a role from the menu below!`,
       embeds: [imageEmbed, groupEmbed],
-      components: [row],
+      components: [row, row2],
       ephemeral: true,
     });
   } else if (action == "role") {
@@ -109,8 +126,22 @@ exports.select = async (client, interaction, args) => {
     if (added.length > 0) content += `\n***Added:*** ${added.join(", ")}\n`;
     if (removed.length > 0) content += `\n***Removed:*** ${removed.join(", ")}`;
 
-    interaction.update({
+    interaction.reply({
       content: content,
+      ephemeral: true,
+    });
+  } else if (action == "back" || action == "next") {
+    const oldGroup = options.find((option) => option.value == args[1]);
+    if(action == "back") {
+      const oldGroupIndex = options.findIndex((option) => option.value == args[1]);
+      if(oldGroupIndex == 0) return interaction.reply({content: "You are already on the first group, you cannot go back further.", ephemeral: true});
+      const newGroup = options[oldGroupIndex - 1];
+
+      // TODO: Create a function to handle this
+    }
+  } else if (action == "close") {
+    interaction.update({
+      content: `Self-Role embed closed!`,
       embeds: [],
       components: [],
       ephemeral: true,
