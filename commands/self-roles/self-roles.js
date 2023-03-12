@@ -89,12 +89,12 @@ exports.select = async (client, interaction, args) => {
       .setImage("https://i.imgur.com/t3zhm4k.png")
       .addFields(
         group.roles.map((role) => ({
-          name: `${role.label}`,
-          value: `${
+          name: `${
             role.hasOwnProperty("menuEmojiOverride")
               ? client.emojis.cache.get(role.menuEmojiOverride)
               : client.emojis.cache.get(role.emoji)
-          } | <@&${role.roleID}>`,
+          } ${role.label}`,
+          value: `<@&${role.roleID}>`,
           inline: true,
         }))
       )
@@ -224,12 +224,12 @@ exports.button = async (client, interaction, args) => {
     .setImage("https://i.imgur.com/t3zhm4k.png")
     .addFields(
       group.roles.map((role) => ({
-        name: `${role.label}`,
-        value: `${
+        name: `${
           role.hasOwnProperty("menuEmojiOverride")
             ? client.emojis.cache.get(role.menuEmojiOverride)
             : client.emojis.cache.get(role.emoji)
-        } | <@&${role.roleID}>`,
+        } ${role.label}`,
+        value: `<@&${role.roleID}>`,
         inline: true,
       }))
     )
