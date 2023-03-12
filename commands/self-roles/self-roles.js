@@ -65,16 +65,19 @@ exports.select = async (client, interaction, args) => {
 
     let groupEmbed = new EmbedBuilder()
       .setTitle(group.label)
-      .setDescription(group.description)
+      .setDescription(group.embed_description + "\n‎")
       .setColor(group.color)
       .setImage("https://i.imgur.com/t3zhm4k.png")
       .addFields(
         group.roles.map((role) => ({
-          name: `${client.emojis.cache.get(role.emoji)} ${role.label}`,
+          name: `${role.hasOwnProperty("menuEmojiOverride") ? client.emojis.cache.get(role.menuEmojiOverride) : client.emojis.cache.get(role.emoji)} ${role.label}`,
           value: `<@&${role.roleID}>`,
           inline: true,
         }))
-      );
+      )
+      .setFooter({
+        text: group.embed_footer,
+      });
 
     interaction.reply({
       content: `Add/Remove a role from the menu below!`,
