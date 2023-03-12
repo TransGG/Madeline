@@ -2,6 +2,7 @@ const {
   ActionRowBuilder,
   StringSelectMenuBuilder,
   EmbedBuilder,
+  ButtonBuilder,
 } = require("discord.js");
 const { embeds, options } = require("./../../config/roles");
 
@@ -38,8 +39,9 @@ exports.select = async (client, interaction, args) => {
   const values = interaction.values;
   const roles = interaction.member.roles.cache.map((role) => role.id);
 
+  const group = options.find((option) => option.value == values[0]);
+
   if (action == "menu") {
-    const group = options.find((option) => option.value == values[0]);
     const multiple = group.multiple;
     const row = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
@@ -53,16 +55,16 @@ exports.select = async (client, interaction, args) => {
       new ButtonBuilder()
         .setCustomId(`self-roles|back|${group.value}`)
         .setLabel("Previous Group")
-        .setStyle("PRIMARY")
+        .setStyle(2)
         .setDisabled(group.value == 0),
       new ButtonBuilder()
         .setCustomId(`self-roles|close`)
         .setLabel("Close")
-        .setStyle("DANGER"),
+        .setStyle(4),
       new ButtonBuilder()
         .setCustomId(`self-roles|next|${group.value}`)
         .setLabel("Next Group")
-        .setStyle("PRIMARY")
+        .setStyle(2)
         .setDisabled(group.value == options.length - 1)
     );
 
@@ -81,13 +83,17 @@ exports.select = async (client, interaction, args) => {
       .setImage(group.image);
 
     let groupEmbed = new EmbedBuilder()
-      .setTitle(group.label)
+      .setTitle(`***${group.label}***`)
       .setDescription(group.embed_description + "\n‎")
       .setColor(group.color)
       .setImage("https://i.imgur.com/t3zhm4k.png")
       .addFields(
         group.roles.map((role) => ({
-          name: `${role.hasOwnProperty("menuEmojiOverride") ? client.emojis.cache.get(role.menuEmojiOverride) : client.emojis.cache.get(role.emoji)} ${role.label}`,
+          name: `${
+            role.hasOwnProperty("menuEmojiOverride")
+              ? client.emojis.cache.get(role.menuEmojiOverride)
+              : client.emojis.cache.get(role.emoji)
+          } ${role.label}`,
           value: `<@&${role.roleID}>`,
           inline: true,
         }))
@@ -126,30 +132,117 @@ exports.select = async (client, interaction, args) => {
     if (added.length > 0) content += `\n***Added:*** ${added.join(", ")}\n`;
     if (removed.length > 0) content += `\n***Removed:*** ${removed.join(", ")}`;
 
+    content +=
+      "\n> *To close this message click the `Dismiss Message` button below.*";
+
     interaction.reply({
       content: content,
-      ephemeral: true,
-    });
-  } else if (action == "back" || action == "next") {
-    const oldGroup = options.find((option) => option.value == args[1]);
-    if(action == "back") {
-      const oldGroupIndex = options.findIndex((option) => option.value == args[1]);
-      if(oldGroupIndex == 0) return interaction.reply({content: "You are already on the first group, you cannot go back further.", ephemeral: true});
-      const newGroup = options[oldGroupIndex - 1];
-
-      // TODO: Create a function to handle this
-    }
-  } else if (action == "close") {
-    interaction.update({
-      content: `Self-Role embed closed!`,
-      embeds: [],
-      components: [],
       ephemeral: true,
     });
   }
 };
 
-// exports.button = async (client, interaction) => {}
+exports.button = async (client, interaction, args) => {
+  let group = null;
+  const roles = interaction.member.roles.cache.map((role) => role.id);
+
+  if (args[0] == "close") {
+    return interaction.update({
+      content: "Thanks for grabbing some self-roles!\n> *To close this message click the `Dismiss Message` button below.*",
+      embeds: [],
+      components: [],
+      ephemeral: true,
+    });
+  } else if (args[0] == "back") {
+    const oldGroupIndex = options.findIndex(
+      (option) => option.value == args[1]
+    );
+    if (oldGroupIndex == 0)
+      return interaction.reply({
+        content:
+          "You are already on the first group, you cannot go back further.",
+        ephemeral: true,
+      });
+    group = options[oldGroupIndex - 1];
+  } else if (args[0] == "next") {
+    const oldGroupIndex = options.findIndex(
+      (option) => option.value == args[1]
+    );
+    if (oldGroupIndex == options.length - 1)
+      return interaction.reply({
+        content: "You are already on the last group, you cannot go further.",
+        ephemeral: true,
+      });
+    group = options[oldGroupIndex + 1];
+  }
+
+  const multiple = group.multiple;
+  const row = new ActionRowBuilder().addComponents(
+    new StringSelectMenuBuilder()
+      .setCustomId(`self-roles|role|${group.value}`)
+      .setPlaceholder(group.placeholder)
+      .setMinValues(0)
+      .setMaxValues(multiple ? group.roles.length : 1)
+  );
+
+  const row2 = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`self-roles|back|${group.value}`)
+      .setLabel("Previous Group")
+      .setStyle(2)
+      .setDisabled(group.value == 0),
+    new ButtonBuilder()
+      .setCustomId(`self-roles|close`)
+      .setLabel("Close")
+      .setStyle(4),
+    new ButtonBuilder()
+      .setCustomId(`self-roles|next|${group.value}`)
+      .setLabel("Next Group")
+      .setStyle(2)
+      .setDisabled(group.value == options.length - 1)
+  );
+
+  group.roles.map((role) => {
+    row.components[0].addOptions({
+      default: roles.includes(role.roleID),
+      label: role.label,
+      value: role.roleID,
+      description: role.description,
+      emoji: role.emoji,
+    });
+  });
+
+  let imageEmbed = new EmbedBuilder()
+    .setColor(group.color)
+    .setImage(group.image);
+
+  let groupEmbed = new EmbedBuilder()
+    .setTitle(`***${group.label}***`)
+    .setDescription(group.embed_description + "\n‎")
+    .setColor(group.color)
+    .setImage("https://i.imgur.com/t3zhm4k.png")
+    .addFields(
+      group.roles.map((role) => ({
+        name: `${
+          role.hasOwnProperty("menuEmojiOverride")
+            ? client.emojis.cache.get(role.menuEmojiOverride)
+            : client.emojis.cache.get(role.emoji)
+        } ${role.label}`,
+        value: `<@&${role.roleID}>`,
+        inline: true,
+      }))
+    )
+    .setFooter({
+      text: group.embed_footer,
+    });
+
+  interaction.update({
+    content: `Add/Remove a role from the menu below!`,
+    embeds: [imageEmbed, groupEmbed],
+    components: [row, row2],
+    ephemeral: true,
+  });
+};
 
 exports.setup = async (client, guilds) => {
   guilds.map((guild) =>
