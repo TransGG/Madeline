@@ -147,13 +147,8 @@ exports.button = async (client, interaction, args) => {
   const roles = interaction.member.roles.cache.map((role) => role.id);
 
   if (args[0] == "close") {
-    return interaction.update({
-      content:
-        "Thanks for grabbing some self-roles!\n> *To close this message click the `Dismiss Message` button below.*",
-      embeds: [],
-      components: [],
-      ephemeral: true,
-    });
+    interaction.deferUpdate();
+    return interaction.deleteReply();
   } else if (args[0] == "back") {
     const oldGroupIndex = options.findIndex(
       (option) => option.value == args[1]
@@ -237,12 +232,19 @@ exports.button = async (client, interaction, args) => {
       text: group.embed_footer,
     });
 
-  interaction.update({
+  await interaction.deferUpdate();
+  await interaction.deleteReply();
+
+  await interaction.followUp({
     content: `Add/Remove a role from the menu below!`,
     embeds: [imageEmbed, groupEmbed],
     components: [row, row2],
     ephemeral: true,
   });
+
+  
+
+
 };
 
 exports.setup = async (client, guilds) => {
