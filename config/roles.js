@@ -460,37 +460,37 @@ module.exports = {
       roles: [
         {
           label: "The Herd",
-          description: "Move together, like a fuzzy, four-legged stampede. Just don't get caught in the middle of their daily migration.",
+          description: "A fuzzy, four-legged stampede. Just don't get caught in the middle of their migration.",
           roleID: "1055733805861843005",
           emoji: "1087899635294666864",
         },
         {
           label: "The Flock",
-          description: "Soar through the sky with grace and precision, leaving mere mortals below in awe of their feathered prowess.",
+          description: "Soar through the sky with grace and precision, leaving mere mortals below in awe.",
           roleID: "972154937159082015",
           emoji: "1087899821609848832",
         },
         {
           label: "The Rats",
-          description: "These sneaky little scoundrels may be small, but they're mighty. Don't underestimate them, or you might end up with a missing shoe.",
+          description: "Don't underestimate these sneaky little scoundrels, or you might end up with a missing shoe.",
           roleID: "1087897163138355241",
           emoji: "1087893922757476442",
         },
         {
           label: "The Shorks",
-          description: "Part shark, part nightmare, all terrifying. These aquatic monsters are the stuff of nightmares. /j",
+          description: "Part shark, part evil, all terrifying. These aquatic monsters are the stuff of nightmares. /j",
           roleID: "1087897214669557811",
           emoji: "966030082596565022",
         },
         {
           label: "The Nyafia",
-          description: "Don't let their cute, fluffy appearance fool you. These adorable little critters are ruthless when it comes to protecting their territory.",
+          description: "These adorable little critters are ruthless when it comes to protecting their territory.",
           roleID: "1060646701532192798",
           emoji: "1087899823241445407",
         },
         {
           label: "The Froggies",
-          description: "They hop, they croak, they're basically living emojis. But don't let their playful nature fool you, they're serious about catching flies.",
+          description: "Don't let their playful nature fool you, they're serious about catching flies.",
           roleID: "1087896898880422020",
           emoji: "1031266555775942696",
         },
@@ -508,7 +508,7 @@ module.exports = {
         },
         {
           label: "The Thinkers",
-          description: "They ponder, they muse, they contemplate the mysteries of the universe. They may not have all the answers, but they're definitely asking questions.",
+          description: "They may not have all the answers, but they're definitely asking questions.",
           roleID: "1087897648788406352",
           emoji: "1087893013650489404",
         },

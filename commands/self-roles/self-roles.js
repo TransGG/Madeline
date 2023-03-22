@@ -39,17 +39,19 @@ exports.select = async (client, interaction, args) => {
   const values = interaction.values;
   const roles = interaction.member.roles.cache.map((role) => role.id);
 
-  const group = options.find((option) => option.value == values[0]);
-  
+  let group = options.find((option) => option.value == values[0]);
+
+  if(!group) group = options.find((option) => option.value == args[1]);
+
   const hasRequirements = group.hasOwnProperty("requirements");
-  const hasRequirementsMet = !hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
+  const hasRequirementsMet = hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
 
   if (action == "menu") {
     const multiple = group.multiple;
     const row = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId(`self-roles|role|${group.value}`)
-        .setPlaceholder(hasRequirements && !hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
+        .setPlaceholder(hasRequirements && hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
         .setMinValues(0)
         .setMaxValues(multiple ? group.roles.length : 1)
         .setDisabled(hasRequirementsMet)
@@ -176,13 +178,17 @@ exports.button = async (client, interaction, args) => {
     group = options[oldGroupIndex + 1];
   }
 
+  const hasRequirements = group.hasOwnProperty("requirements");
+  const hasRequirementsMet = hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
+
   const multiple = group.multiple;
   const row = new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
       .setCustomId(`self-roles|role|${group.value}`)
-      .setPlaceholder(group.placeholder)
+      .setPlaceholder(hasRequirements && hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
       .setMinValues(0)
       .setMaxValues(multiple ? group.roles.length : 1)
+      .setDisabled(hasRequirementsMet)
   );
 
   const row2 = new ActionRowBuilder().addComponents(
