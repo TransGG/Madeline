@@ -375,7 +375,7 @@ module.exports = {
       ],
     },
     {
-      label: "Extra Color Roles [Supporter+ Only]",
+      label: "Extra Color Roles [Supporter Only]",
       title: "Select a Extra Color Roles role to add/remove.",
       value: "extra_color_roles",
       image: "https://i.imgur.com/Lrakh5h.png",
