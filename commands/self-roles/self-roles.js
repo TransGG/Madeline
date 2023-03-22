@@ -40,15 +40,19 @@ exports.select = async (client, interaction, args) => {
   const roles = interaction.member.roles.cache.map((role) => role.id);
 
   const group = options.find((option) => option.value == values[0]);
+  
+  const hasRequirements = group.hasOwnProperty("requirements");
+  const hasRequirementsMet = !hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
 
   if (action == "menu") {
     const multiple = group.multiple;
     const row = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId(`self-roles|role|${group.value}`)
-        .setPlaceholder(group.placeholder)
+        .setPlaceholder(hasRequirements && !hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
         .setMinValues(0)
         .setMaxValues(multiple ? group.roles.length : 1)
+        .setDisabled(hasRequirementsMet)
     );
 
     const row2 = new ActionRowBuilder().addComponents(
