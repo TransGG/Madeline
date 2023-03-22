@@ -445,10 +445,10 @@ module.exports = {
       ],
     },
     {
-      label: "Emoji Role Icons [Supporter+ Only]",
+      label: "Emoji Icons Roles [Supporter+ Only]",
       title: "Select a Emoji Role Icons role to add/remove.",
-      value: "emoji_role_icons",
-      image: "https://i.imgur.com/EZQN9Xn.png",
+      value: "emoji_icon_roles",
+      image: "https://i.imgur.com/NhBBF4i.png",
       placeholder: "Select a role to add/remove.",
       description: "Select a Emoji Role Icons role to add/remove.",
       embed_description: "> Show off your support with a emoji beside your name!",
