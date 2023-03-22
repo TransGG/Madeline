@@ -386,7 +386,7 @@ module.exports = {
       emoji: "1082795565408063630",
       color: 0x4a7689,
       multiple: false,
-      requirements: ["1087868306511372292", "1087869446707740773", "1087871081634861117"],
+      requirements: ["1087909797782888458", "1087909841491726347", "1087909882805628991"],
       roles: [
         {
           label: "Sage Green",
@@ -456,7 +456,7 @@ module.exports = {
       emoji: "1082795565408063630",
       color: 0x4a7689,
       multiple: false,
-      requirements: ["1087869446707740773", "1087871081634861117"],
+      requirements: ["1087909841491726347", "1087909882805628991"],
       roles: [
         {
           label: "The Herd",

@@ -44,14 +44,14 @@ exports.select = async (client, interaction, args) => {
   if(!group) group = options.find((option) => option.value == args[1]);
 
   const hasRequirements = group.hasOwnProperty("requirements");
-  const hasRequirementsMet = hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
+  const hasRequirementsMet = hasRequirements && !group.requirements.some((requirement) => roles.includes(requirement))
 
   if (action == "menu") {
     const multiple = group.multiple;
     const row = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId(`self-roles|role|${group.value}`)
-        .setPlaceholder(hasRequirements && hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
+        .setPlaceholder(hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
         .setMinValues(0)
         .setMaxValues(multiple ? group.roles.length : 1)
         .setDisabled(hasRequirementsMet)
@@ -179,18 +179,18 @@ exports.button = async (client, interaction, args) => {
   }
 
   const hasRequirements = group.hasOwnProperty("requirements");
-  const hasRequirementsMet = hasRequirements || hasRequirements && group.requirements.some((requirement) => roles.includes(requirement));
+  const hasRequirementsMet = hasRequirements && !group.requirements.some((requirement) => roles.includes(requirement))
 
   const multiple = group.multiple;
   const row = new ActionRowBuilder().addComponents(
     new StringSelectMenuBuilder()
       .setCustomId(`self-roles|role|${group.value}`)
-      .setPlaceholder(hasRequirements && hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
+      .setPlaceholder(hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
       .setMinValues(0)
       .setMaxValues(multiple ? group.roles.length : 1)
       .setDisabled(hasRequirementsMet)
   );
-
+  
   const row2 = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId(`self-roles|back|${group.value}`)
