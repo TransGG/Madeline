@@ -372,6 +372,13 @@ module.exports = {
           emoji: "1082780291246071859",
           menuEmojiOverride: "1082780292202373142",
         },
+        {
+          label: "Hide Donor Posting Channel",
+          description: "Don't want to see posts by server Donors?",
+          roleID: "1088221208832643222",
+          emoji: "1082780291246071859",
+          menuEmojiOverride: "1082780292202373142",
+        },
       ],
     },
     {
