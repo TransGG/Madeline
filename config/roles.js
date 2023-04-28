@@ -233,6 +233,12 @@ module.exports = {
           emoji: "1082780393071181995",
         },
         {
+          label: "Bump Pings (~2h)",
+          description: "Get pinged whenever the server can be bumped. Note: Pings are sent every 2 hours.",
+          roleID: "1100166137163038830",
+          emoji: "1101589245732335666",
+        },
+        {
           label: "Giveaway Pings",
           description: "Giveaways and contests happening in the community.",
           roleID: "1058957591293726770",
