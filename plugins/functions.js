@@ -1,33 +1,24 @@
-module.exports = client => {
-    // Call using client.parseOptions() anywhere!
-    client.parseOptions = (options, multiple) => {
-        // Take in the options in BASE64 and parse them, return back as a Discord.JS select component 
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
-        // Example:
-        // [{title: "Hello", description: "World", roleID: "1234567890"}, {title: "Hello", description: "World", roleID: "1234567890" emoji: "324890384"}]
+module.exports = (client) => {
+  client.parseButtons = (buttons) => {
+    // [{"label": "Hello", "style": 2, "roleID": "1234567890"}]
 
-        // Parse the options
-        const parsedOptions = JSON.parse(Buffer.from(options, "base64").toString("utf-8"));
+    const parsedButtons = JSON.parse(
+      Buffer.from(buttons, "base64").toString("utf-8")
+    );
 
-        // Create the select component
-        const select = new client.Discord.MessageSelectMenu()
-            .setCustomId("add-roles")
-            .setPlaceholder("Select a role")
-            .setMinValues(1)
-            .setMaxValues(multiple ? parsedOptions.length : 1);
+    const row = new ActionRowBuilder();
 
-        parsedOptions.map(option => {
-            select.addOptions([
-                {
-                    label: option.title,
-                    description: option.description,
-                    value: option.roleID,
-                    emoji: option.emoji ? option.emoji : null
-                }
-            ]);
-        });
+    parsedButtons.map((button) => {
+      row.addComponents(
+        new ButtonBuilder()
+          .setCustomId(`add-role|${button.roleID}`)
+          .setLabel(button.label)
+          .setStyle(button.style ? button.style : 1)
+      );
+    });
 
-        return select;
-
-    }
-}
+    return row;
+  };
+};
