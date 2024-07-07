@@ -47,6 +47,8 @@ exports.select = async (client, interaction, args) => {
   const hasRequirementsMet = hasRequirements && !group.requirements.some((requirement) => roles.includes(requirement))
 
   if (action == "menu") {
+    await interaction.update({});
+
     const multiple = group.multiple;
     const row = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
@@ -108,7 +110,7 @@ exports.select = async (client, interaction, args) => {
         text: group.embed_footer,
       });
 
-    interaction.reply({
+    interaction.followUp({
       content: `Add/Remove a role from the menu below!`,
       embeds: [imageEmbed, groupEmbed],
       components: [row, row2],
