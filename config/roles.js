@@ -148,7 +148,7 @@ module.exports = {
           label: "The Kitsunes",
           description: "These cunning foxes are masters of deception, with a sly sense of humor to match.",
           roleID: "1087897564113801258",
-          emoji: "1087892840811593859",
+          emoji: "1259541212503740578",
         },
         {
           label: "The Thinkers",
