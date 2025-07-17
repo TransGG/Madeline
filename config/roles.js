@@ -82,10 +82,16 @@ module.exports = {
         },
         {
           label: "Color Rotation",
-          description: "Changes Randomly when staff want to spice things up.",
+          description: "Changes randomly when staff want to spice things up.",
           roleID: "1087884755221102762",
           emoji: "1087888888472805436",
         },
+        {
+          label: "Trans Flag Gradient",
+          description: "Gradient role with the trans flag colors!",
+          roleID: "1395256277759824004",
+          emoji: "🏳️‍⚧️",
+        }
       ],
     },
     {
