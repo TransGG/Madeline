@@ -385,6 +385,8 @@ exports.setup = async (client, guilds) => {
     guild.commands.create({
       name: "edit-roles",
       description: "Edit the available self-selectable roles",
+      defaultMemberPermissions: '0',
+      dmPermission: false,
       options: [
         {
           type: ApplicationCommandOptionType.Subcommand,
