@@ -5,6 +5,7 @@ const {
   ButtonBuilder,
 } = require("discord.js");
 const { embeds, options } = require("./../../config/roles");
+const { getRoles } = require("../../db/db");
 
 exports.slash = async (client, interaction) => {
   // Create the select component
@@ -41,12 +42,24 @@ exports.select = async (client, interaction, args) => {
 
   let group = options.find((option) => option.value == values[0]);
 
-  if(!group) group = options.find((option) => option.value == args[1]);
+  if (!group) group = options.find((option) => option.value == args[1]);
+
+  const selectableRoles = await getRoles(group.value);
 
   const hasRequirements = group.hasOwnProperty("requirements");
   const hasRequirementsMet = hasRequirements && !group.requirements.some((requirement) => roles.includes(requirement))
 
   if (action == "menu") {
+    if (selectableRoles.length == 0) {
+      await interaction.reply({
+        content: "This group has no roles. This should not happen; please contact staff if this issue persists.",
+        ephemeral: true,
+        components: [],
+      });
+
+      return;
+    }
+
     await interaction.update({});
 
     const multiple = group.multiple;
@@ -55,7 +68,7 @@ exports.select = async (client, interaction, args) => {
         .setCustomId(`self-roles|role|${group.value}`)
         .setPlaceholder(hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
         .setMinValues(0)
-        .setMaxValues(multiple ? group.roles.length : 1)
+        .setMaxValues(multiple ? selectableRoles.length : 1)
         .setDisabled(hasRequirementsMet)
     );
 
@@ -76,7 +89,7 @@ exports.select = async (client, interaction, args) => {
         .setDisabled(group.value == options.length - 1)
     );
 
-    group.roles.map((role) => {
+    selectableRoles.map((role) => {
       row.components[0].addOptions({
         default: roles.includes(role.roleID),
         label: role.label,
@@ -96,11 +109,11 @@ exports.select = async (client, interaction, args) => {
       .setColor(group.color)
       .setImage("https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/embed-sizer.png")
       .addFields(
-        group.roles.map((role) => ({
+        selectableRoles.map((role) => ({
           name: `${
             role.hasOwnProperty("menuEmojiOverride")
-              ? client.emojis.cache.get(role.menuEmojiOverride)
-              : client.emojis.cache.get(role.emoji)
+              ? client.emojis.cache.get(role.menuEmojiOverride) ?? role.menuEmojiOverride
+              : client.emojis.cache.get(role.emoji) ?? role.emoji
           } ${role.label}`,
           value: `<@&${role.roleID}>`,
           inline: true,
@@ -122,7 +135,7 @@ exports.select = async (client, interaction, args) => {
     let added = [];
     let removed = [];
 
-    group.roles.map((role) => {
+    selectableRoles.map((role) => {
       if (values.includes(role.roleID)) {
         if (!roles.includes(role.roleID)) {
           interaction.member.roles.add(role.roleID);
@@ -189,7 +202,7 @@ exports.button = async (client, interaction, args) => {
       .setCustomId(`self-roles|role|${group.value}`)
       .setPlaceholder(hasRequirementsMet ? "Missing Subscription Requirements" : group.placeholder)
       .setMinValues(0)
-      .setMaxValues(multiple ? group.roles.length : 1)
+      .setMaxValues(multiple ? selectableRoles.length : 1)
       .setDisabled(hasRequirementsMet)
   );
   
@@ -210,7 +223,7 @@ exports.button = async (client, interaction, args) => {
       .setDisabled(group.value == options.length - 1)
   );
 
-  group.roles.map((role) => {
+  selectableRoles.map((role) => {
     row.components[0].addOptions({
       default: roles.includes(role.roleID),
       label: role.label,
@@ -230,11 +243,11 @@ exports.button = async (client, interaction, args) => {
     .setColor(group.color)
     .setImage("https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/embed-sizer.png")
     .addFields(
-      group.roles.map((role) => ({
+      selectableRoles.map((role) => ({
         name: `${
           role.hasOwnProperty("menuEmojiOverride")
-            ? client.emojis.cache.get(role.menuEmojiOverride)
-            : client.emojis.cache.get(role.emoji)
+              ? client.emojis.cache.get(role.menuEmojiOverride) ?? role.menuEmojiOverride
+              : client.emojis.cache.get(role.emoji) ?? role.emoji
         } ${role.label}`,
         value: `<@&${role.roleID}>`,
         inline: true,
