@@ -2,8 +2,12 @@ const {
   ActionRowBuilder,
   StringSelectMenuBuilder,
   ApplicationCommandOptionType,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
 } = require("discord.js");
 const { options } = require("../../config/roles");
+const { getRoles, setRoles } = require("../../db/db");
 
 exports.slash = async (client, interaction) => {
   const subcommand = interaction.options.getSubcommand(true);
@@ -105,6 +109,197 @@ exports.slash = async (client, interaction) => {
     });
   }
 };
+
+exports.select = async (client, interaction, args) => {
+  if (args[0] == "add-role" && args.length <= 4) {
+    await interaction.deferUpdate();
+
+    const group = interaction.values[0];
+    const roles = await getRoles(group);
+
+    if (roles.length >= 25) {
+      await interaction.editReply({
+        content: "This category already has the maximum number of roles (25). You will need to remove an existing role to add another role.",
+        components: [],
+      });
+
+      return;
+    }
+
+    if (roles.some((role) => role.roleID == args[1])) {
+      await interaction.editReply({
+        content: "This category already has that role.",
+        components: [],
+      });
+
+      return;
+    }
+
+    await interaction.editReply({
+      content: "Select the role AFTER WHICH to insert the new option.",
+      components: [
+        new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId(`edit-roles|add-role|${group}|${args[1]}|${args[2]}|${args[3]}`)
+            .setPlaceholder("Select a role.")
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions({
+              label: "[Insert option at start]",
+              value: "-",
+              description: "Select this to insert the new option at the start of the list.",
+              emoji: "⬅️",
+            })
+            .addOptions(roles.map((role) => ({
+              label: role.label,
+              value: role.roleID,
+              description: role.description,
+              emoji: role.emoji,
+            }))),
+        ),
+      ],
+    });
+  } else if (args[0] == "add-role") {
+    await interaction.showModal(
+      new ModalBuilder()
+        .setCustomId(`edit-roles|add-role|${args[1]}|${args[2]}|${args[3]}|${args[4]}|${interaction.values[0]}`)
+        .setTitle("New Role Option")
+        .addComponents(
+          new ActionRowBuilder().addComponents(
+            new TextInputBuilder()
+              .setCustomId("label")
+              .setStyle(TextInputStyle.Short)
+              .setLabel("Label")
+              .setPlaceholder("The label for the dropdown option")
+              .setMaxLength(100)
+              .setRequired(true),
+          ),
+          new ActionRowBuilder().addComponents(
+            new TextInputBuilder()
+              .setCustomId("description")
+              .setStyle(TextInputStyle.Short)
+              .setLabel("Description")
+              .setPlaceholder("The description for the dropdown option")
+              .setMaxLength(100)
+              .setRequired(true),
+          ),
+        ),
+    );
+  } else if (args[0] == "remove-role" && args.length <= 1) {
+    await interaction.deferUpdate();
+
+    const group = interaction.values[0];
+    const roles = await getRoles(group);
+
+    if (roles.length <= 1) {
+      await interaction.editReply({
+        content: "There are no roles to remove from this group (you cannot remove the last role from a group).",
+        components: [],
+      });
+
+      return;
+    }
+
+    await interaction.editReply({
+      content: "Select the role to remove.",
+      components: [
+        new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId(`edit-roles|remove-role|${group}`)
+            .setPlaceholder("Select a role.")
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions(roles.map((role) => ({
+              label: role.label,
+              value: role.roleID,
+              description: role.description,
+              emoji: role.emoji,
+            }))),
+        ),
+      ],
+    });
+  } else if (args[0] == "remove-role") {
+    await interaction.update({
+      content: "Removing role...",
+      components: [],
+    });
+
+    const group = args[1];
+    let roles = await getRoles(group);
+    const target = interaction.values[0];
+
+    const index = roles.findIndex((role) => role.roleID == target);
+
+    if (index == -1) {
+      await interaction.editReply("Could not find that role option (perhaps someone else removed it while you were acting).");
+      return;
+    }
+
+    roles = [...roles.slice(0, index), ...roles.slice(index + 1)];
+
+    await setRoles(group, roles);
+    await interaction.editReply("Role removed.");
+  } else if (args[0] == "update-role" && args.length <= 3) {
+    await interaction.deferUpdate();
+
+    const group = interaction.values[0];
+    const roles = await getRoles(group);
+
+    if (roles.length <= 0) {
+      await interaction.editReply({
+        content: "There are no roles to update in this group.",
+        components: [],
+      });
+
+      return;
+    }
+
+    await interaction.editReply({
+      content: "Select the role to update.",
+      components: [
+        new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId(`edit-roles|update-role|${group}|${args[1]}|${args[2]}`)
+            .setPlaceholder("Select a role.")
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions(roles.map((role) => ({
+              label: role.label,
+              value: role.roleID,
+              description: role.description,
+              emoji: role.emoji,
+            }))),
+        ),
+      ],
+    });
+  } else if (args[0] == "update-role") {
+    await interaction.showModal(
+      new ModalBuilder()
+        .setCustomId(`edit-roles|update-role|${args[1]}|${args[2]}|${args[3]}|${interaction.values[0]}`)
+        .setTitle("Update Role Option")
+        .addComponents(
+          new ActionRowBuilder().addComponents(
+            new TextInputBuilder()
+              .setCustomId("label")
+              .setStyle(TextInputStyle.Short)
+              .setLabel("Label (blank = no edit)")
+              .setPlaceholder("The label for the dropdown option")
+              .setMaxLength(100)
+              .setRequired(false),
+          ),
+          new ActionRowBuilder().addComponents(
+            new TextInputBuilder()
+              .setCustomId("description")
+              .setStyle(TextInputStyle.Short)
+              .setLabel("Description (blank = no edit)")
+              .setPlaceholder("The description for the dropdown option")
+              .setMaxLength(100)
+              .setRequired(false),
+          ),
+        ),
+    );
+  }
+}
 exports.setup = async (client, guilds) => {
   guilds.map((guild) =>
     guild.commands.create({
