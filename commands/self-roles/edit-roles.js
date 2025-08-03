@@ -191,9 +191,9 @@ exports.select = async (client, interaction, args) => {
     const group = interaction.values[0];
     const roles = await getRoles(group);
 
-    if (roles.length <= 0) {
+    if (roles.length <= 1) {
       await interaction.editReply({
-        content: "There are no roles to remove from this group.",
+        content: "There are no roles to remove from this group (you cannot remove the last role from a group).",
         components: [],
       });
 

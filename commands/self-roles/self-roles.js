@@ -50,6 +50,16 @@ exports.select = async (client, interaction, args) => {
   const hasRequirementsMet = hasRequirements && !group.requirements.some((requirement) => roles.includes(requirement))
 
   if (action == "menu") {
+    if (selectableRoles.length == 0) {
+      await interaction.reply({
+        content: "This group has no roles. This should not happen; please contact staff if this issue persists.",
+        ephemeral: true,
+        components: [],
+      });
+
+      return;
+    }
+
     await interaction.update({});
 
     const multiple = group.multiple;
