@@ -300,6 +300,86 @@ exports.select = async (client, interaction, args) => {
     );
   }
 }
+
+exports.modal = async (client, interaction, args) => {
+  if (args[0] == "add-role") {
+    await interaction.update({
+      content: "Adding role...",
+      components: [],
+    });
+
+    const group = args[1];
+    let roles = await getRoles(group);
+
+    if (roles.length >= 25) {
+      await interaction.editReply("Could not add role (25+ roles, perhaps someone else added a role while you were acting).")
+      return;
+    }
+
+    if (roles.some((role) => role.roleID == args[2])) {
+      await interaction.editReply("Could not add role (it is already in this category, perhaps someone else added it while you were acting).");
+      return ;
+    }
+
+    const roleID = args[2];
+    const emoji = args[3];
+    const menuEmojiOverride = args[4] || undefined;
+    const label = interaction.fields.getTextInputValue("label");
+    const description = interaction.fields.getTextInputValue("description");
+
+    const object = { roleID, emoji, label, description };
+    if (menuEmojiOverride) object.menuEmojiOverride = menuEmojiOverride;
+
+    const anchor = args[5];
+
+    if (anchor == "-") {
+      roles = [object, ...roles];
+    } else {
+      const index = roles.findIndex((role) => role.roleID == anchor);
+
+      if (index == -1) {
+        await interaction.editReply("Could not add role (could not find the role you targeted to add this role after, perhaps someone else removed it while you were acting).");
+        return;
+      }
+
+      roles = [...roles.slice(0, index + 1), object, ...roles.slice(index + 1)];
+    }
+
+    await setRoles(group, roles);
+    await interaction.editReply("Role added.");
+  } else if (args[0] == "update-role") {
+    await interaction.update({
+      content: "Updating role...",
+      components: [],
+    });
+
+    const group = args[1];
+    let roles = await getRoles(group);
+    const index = roles.findIndex((role) => role.roleID == args[4]);
+
+    if (index == -1) {
+      await interaction.editReply("Could not update role (could not find it, perhaps someone else removed it while you were acting).");
+      return;
+    }
+
+    const current = roles[index];
+
+    const emoji = args[2] || current.emoji;
+    const menuEmojiOverride = args[3];
+    const roleID = args[4];
+    const label = interaction.fields.getTextInputValue("label") || current.label;
+    const description = interaction.fields.getTextInputValue("description") || current.description;
+
+    const object = { roleID, emoji: emoji, label, description };
+    if (menuEmojiOverride != "-" && (menuEmojiOverride || current.menuEmojiOverride)) object.menuEmojiOverride = menuEmojiOverride || current.menuEmojiOverride;
+
+    roles[index] = object;
+
+    await setRoles(group, roles);
+    await interaction.editReply("Role updated.");
+  }
+}
+
 exports.setup = async (client, guilds) => {
   guilds.map((guild) =>
     guild.commands.create({
