@@ -94,7 +94,7 @@ exports.select = async (client, interaction, args) => {
       .setTitle(`***${group.label}***`)
       .setDescription(group.embed_description + "\n‎")
       .setColor(group.color)
-      .setImage("https://i.imgur.com/t3zhm4k.png")
+      .setImage("https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/embed-sizer.png")
       .addFields(
         group.roles.map((role) => ({
           name: `${
@@ -228,7 +228,7 @@ exports.button = async (client, interaction, args) => {
     .setTitle(`***${group.label}***`)
     .setDescription(group.embed_description + "\n‎")
     .setColor(group.color)
-    .setImage("https://i.imgur.com/t3zhm4k.png")
+    .setImage("https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/embed-sizer.png")
     .addFields(
       group.roles.map((role) => ({
         name: `${
