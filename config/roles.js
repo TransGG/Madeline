@@ -31,68 +31,6 @@ module.exports = {
       color: 0x4a7689,
       multiple: false,
       requirements: ["1087868306511372292", "1087869446707740773", "1087871081634861117"],
-      roles: [
-        {
-          label: "Sage Green",
-          description: "Soothing, evoking calmness and tranquility.",
-          roleID: "1087884342673543370",
-          emoji: "1087888893094928384",
-        },
-        {
-          label: "Turbo",
-          description: "Denotes speed, agility, and excitement.",
-          roleID: "1087884432687497276",
-          emoji: "1087888894088970301",
-        },
-        {
-          label: "Viking",
-          description: "Symbolizes strength, power, and determination",
-          roleID: "1087884433421516951",
-          emoji: "1087888940410867793",
-        },
-        {
-          label: "Mauve",
-          description: "Grace, and elegance with a touch of mystery.",
-          roleID: "1087884488547258409",
-          emoji: "1087888889550737469",
-        },
-        {
-          label: "Butterfly Bush",
-          description: "A sense of mystery, magic, and enchantment.",
-          roleID: "1087884559091257455",
-          emoji: "1087888885457096784",
-        },
-        {
-          label: "Rose Bud Cherry",
-          description: "Reminiscent of cherry blossoms and springtime.",
-          roleID: "1087884617589198939",
-          emoji: "1087888892067328010",
-        },
-        {
-          label: "Carnation",
-          description: "Symbolizes love, fascination, and distinction.",
-          roleID: "1087884664787705897",
-          emoji: "1087888887495544882",
-        },
-        {
-          label: "Mayochup",
-          description: "Represents a perfect blend of flavors.",
-          roleID: "1087884705736695939",
-          emoji: "1087888890515423302",
-        },
-        {
-          label: "Color Rotation",
-          description: "Changes randomly when staff want to spice things up.",
-          roleID: "1087884755221102762",
-          emoji: "1087888888472805436",
-        },
-        {
-          label: "Trans Flag Gradient",
-          description: "Gradient role with the trans flag colors!",
-          roleID: "1395256277759824004",
-          emoji: "🏳️‍⚧️",
-        }
-      ],
     },
     {
       label: "Emoji Icons Roles [Supporter+ Only]",
@@ -107,62 +45,6 @@ module.exports = {
       color: 0x4a7689,
       multiple: false,
       requirements: ["1087869446707740773", "1087871081634861117"],
-      roles: [
-        {
-          label: "The Herd",
-          description: "A fuzzy, four-legged stampede. Just don't get caught in the middle of their migration.",
-          roleID: "1055733805861843005",
-          emoji: "1087899635294666864",
-        },
-        {
-          label: "The Flock",
-          description: "Soar through the sky with grace and precision, leaving mere mortals below in awe.",
-          roleID: "972154937159082015",
-          emoji: "1087899821609848832",
-        },
-        {
-          label: "The Rats",
-          description: "Don't underestimate these sneaky little scoundrels, or you might end up with a missing shoe.",
-          roleID: "1087897163138355241",
-          emoji: "1087893922757476442",
-        },
-        {
-          label: "The Shorks",
-          description: "Part shark, part evil, all terrifying. These aquatic monsters are the stuff of nightmares. /j",
-          roleID: "1087897214669557811",
-          emoji: "966030082596565022",
-        },
-        {
-          label: "The Nyafia",
-          description: "These adorable little critters are ruthless when it comes to protecting their territory.",
-          roleID: "1060646701532192798",
-          emoji: "1087899823241445407",
-        },
-        {
-          label: "The Froggies",
-          description: "Don't let their playful nature fool you, they're serious about catching flies.",
-          roleID: "1087896898880422020",
-          emoji: "1031266555775942696",
-        },
-        {
-          label: "The Sylvies",
-          description: "They flit through the trees like woodland fairies, spreading magic and wonder wherever they go.",
-          roleID: "1087897458643828857",
-          emoji: "966885675171475487",
-        },
-        {
-          label: "The Kitsunes",
-          description: "These cunning foxes are masters of deception, with a sly sense of humor to match.",
-          roleID: "1087897564113801258",
-          emoji: "1259541212503740578",
-        },
-        {
-          label: "The Thinkers",
-          description: "They may not have all the answers, but they're definitely asking questions.",
-          roleID: "1087897648788406352",
-          emoji: "1087893013650489404",
-        },
-      ],
     },
   ],
 };
