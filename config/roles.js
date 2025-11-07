@@ -3,7 +3,7 @@ module.exports = {
     {
       color: 0x6b87a6,
       image: {
-        url: "https://i.imgur.com/sH39NYW.png",
+        url: "https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/roles-index-header.png",
       },
     },
     {
@@ -12,7 +12,7 @@ module.exports = {
       description:
         "Welcome to the Premium Self Role Directory! Here you can explore all of the premium self roles we have to offer, organized into groups based on their functions.\n\n> Please select the group you would like to add or remove roles from.\n\n***Note:***\n```If you would like to view all of the groups, start with the first and choose the \"Next Group\" option after selecting your roles for that group.```",
       image: {
-        url: "https://i.imgur.com/t3zhm4k.png",
+        url: "https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/embed-sizer.png",
       },
     },
   ],
@@ -22,7 +22,7 @@ module.exports = {
       label: "Extra Color Roles [Supporter Only]",
       title: "Select a Extra Color Roles role to add/remove.",
       value: "extra_color_roles",
-      image: "https://i.imgur.com/Lrakh5h.png",
+      image: "https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/extra-color-roles-header.png",
       placeholder: "Select a role to add/remove.",
       description: "Select a Extra Color Roles role to add/remove.",
       embed_description: "> Show off your support with extra unique styles by choosing a supporter color role!",
@@ -98,7 +98,7 @@ module.exports = {
       label: "Emoji Icons Roles [Supporter+ Only]",
       title: "Select a Emoji Role Icons role to add/remove.",
       value: "emoji_icon_roles",
-      image: "https://i.imgur.com/NhBBF4i.png",
+      image: "https://raw.githubusercontent.com/TransGG/assets/refs/heads/main/emoji-icon-roles-header.png",
       placeholder: "Select a role to add/remove.",
       description: "Select a Emoji Role Icons role to add/remove.",
       embed_description: "> Show off your support with a emoji beside your name!",
