@@ -130,8 +130,6 @@ exports.select = async (client, interaction, args) => {
       ephemeral: true,
     });
   } else if (action == "role") {
-    const group = options.find((option) => option.value == args[1]);
-
     let added = [];
     let removed = [];
 
@@ -191,6 +189,18 @@ exports.button = async (client, interaction, args) => {
         ephemeral: true,
       });
     group = options[oldGroupIndex + 1];
+  }
+
+  const selectableRoles = await getRoles(group.value);
+
+  if (selectableRoles.length == 0) {
+    await interaction.reply({
+      content: "This group has no roles. This should not happen; please contact staff if this issue persists.",
+      ephemeral: true,
+      components: [],
+    });
+
+    return;
   }
 
   const hasRequirements = group.hasOwnProperty("requirements");
