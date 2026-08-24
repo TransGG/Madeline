@@ -1,0 +1,20 @@
+{
+    "name": "bot-template",
+    "module": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "start": "bun ."
+    },
+    "dependencies": {
+        "@hyperneutrino/djs-lite": "^1.5.1",
+        "@trans.gg/djs-wrapper": "^1.1.2",
+        "discord.js": "^14.27.0",
+        "mongodb": "^7.5.0"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    }
+}
