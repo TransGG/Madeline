@@ -6,8 +6,8 @@
         "start": "bun ."
     },
     "dependencies": {
-        "@hyperneutrino/djs-lite": "^1.5.1",
-        "@trans.gg/djs-wrapper": "^1.1.2",
+        "@hyperneutrino/djs-lite": "^1.7.2",
+        "@trans.gg/djs-wrapper": "^2.0.0",
         "discord.js": "^14.27.0",
         "mongodb": "^7.5.0"
     },
