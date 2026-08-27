@@ -1,5 +1,6 @@
 import { Subcommand } from "@hyperneutrino/djs-lite";
-import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
+import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord.js";
+import { getAndReplaceLinkedRoleForChannel } from "lib/db/schemas/channel-role-links.ts";
 import assert from "node:assert";
 
 export default new Subcommand({
@@ -20,26 +21,30 @@ export default new Subcommand({
     handler: async (interaction) => {
         assert(interaction.guild);
 
+        const me = await interaction.guild.members.fetchMe();
+
+        if (!me.permissions.has(PermissionFlagsBits.ManageRoles))
+            throw "I do not have the Manage Roles permission, which is required for this functionality.";
+
         const rawChannel = interaction.options.getChannel("channel", true);
         const rawRole = interaction.options.getRole("role", true);
 
         const channel = await interaction.guild.channels.fetch(rawChannel.id).catch(() => null);
+        if (!channel) throw "Could not fetch that channel. Make sure I have permission to see that channel.";
+
         const role = await interaction.guild.roles.fetch(rawRole.id).catch(() => null);
+        assert(role, "Failed to fetch role.");
 
-        if (!channel) {
-            return interaction.reply({
-                flags: MessageFlags.Ephemeral,
-                content: "Could not fetch that channel. Make sure I have permission to see that channel.",
-            });
-        }
+        if (role.managed) throw "That role is managed (e.g. a bot role or the booster role) so I cannot assign it.";
 
-        if (!role) {
-            return interaction.reply({
-                flags: MessageFlags.Ephemeral,
-                content: "Failed to fetch role. This should not be possible; please contact a developer.",
-            });
-        }
+        if (role.comparePositionTo(me.roles.highest) >= 0)
+            throw "That role is higher than or equal to my highest role, so I cannot assign it.";
 
-        const me = await interaction.guild.members.fetchMe();
+        const previousRoleId = await getAndReplaceLinkedRoleForChannel(channel.id, role.id);
+        const previousRole = previousRoleId && interaction.guild.roles.cache.get(previousRoleId);
+
+        return `Messages in ${channel} will now result in ${role} being assigned to the author. ${
+            previousRole ? `This replaces the previous link from this channel to <@&${previousRole}>.` : ""
+        }`;
     },
 });
