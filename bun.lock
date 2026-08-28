@@ -5,7 +5,7 @@
     "": {
       "dependencies": {
         "@hyperneutrino/djs-lite": "^1.7.3",
-        "@trans.gg/djs-wrapper": "^2.1.1",
+        "@trans.gg/djs-wrapper": "^2.1.2",
         "discord.js": "^14.27.0",
         "mongodb": "^7.5.0",
       },
@@ -40,7 +40,7 @@
 
     "@sapphire/snowflake": ["@sapphire/snowflake@3.5.5", "", {}, "sha512-xzvBr1Q1c4lCe7i6sRnrofxeO1QTP/LKQ6A6qy0iB4x5yfiSfARMEQEghojzTNALDTcv8En04qYNIco9/K9eZQ=="],
 
-    "@trans.gg/djs-wrapper": ["@trans.gg/djs-wrapper@2.1.1", "", { "dependencies": { "@hyperneutrino/djs-lite": "^1.7.3", "discord.js": "^14.27.0" } }, "sha512-iQN6mPOIgUsXoEh5cvF9t+twRdPXa64hLE/FsuSIlUx5VaHNAlasHs07Mb0vWSKowVJMSuDvqRv/YzFxPEnxrw=="],
+    "@trans.gg/djs-wrapper": ["@trans.gg/djs-wrapper@2.1.2", "", { "dependencies": { "@hyperneutrino/djs-lite": "^1.7.3", "discord.js": "^14.27.0" } }, "sha512-fleHj3Lz9ANm19vwiVnX5PJOrQk++znG2FpCtOcFg9HBqgnq3SnA6Glg8b+TBOdx1hmVi7umAfKkbd8aXQVd/w=="],
 
     "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
