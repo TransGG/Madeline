@@ -1,25 +1,26 @@
-import { SlashCommand } from "@hyperneutrino/djs-lite";
+import { Subcommand } from "@hyperneutrino/djs-lite";
 import { ApplicationCommandOptionType } from "discord.js";
+import { getAndRemoveLinkedRoleForChannel } from "lib/db/schemas/channel-role-links.ts";
 import assert from "node:assert";
 
-export default new SlashCommand({
+export default new Subcommand({
     name: "remove",
-    description: "Remove the linked role for a channel or vice versa.",
+    description: "Remove the linked role for a channel.",
     options: [
         {
             type: ApplicationCommandOptionType.Channel,
             name: "channel",
-            description: "The channel whose link to remove",
-            required: false,
-        },
-        {
-            type: ApplicationCommandOptionType.Role,
-            name: "role",
-            description: "The role whose link to remove",
-            required: false,
+            description: "The channel whose link to remove.",
+            required: true,
         },
     ],
     handler: async (interaction) => {
         assert(interaction.guild);
+
+        const channel = interaction.options.getChannel("channel", true);
+
+        const roleId = await getAndRemoveLinkedRoleForChannel(channel.id);
+        if (!roleId) throw "That channel is not linked to a role.";
+        return `${channel} is no longer linked to <@&${roleId}>.`;
     },
 });

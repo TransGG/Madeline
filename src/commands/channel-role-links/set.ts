@@ -11,11 +11,13 @@ export default new Subcommand({
             type: ApplicationCommandOptionType.Channel,
             name: "channel",
             description: "The channel to link (I will watch messages here)",
+            required: true,
         },
         {
             type: ApplicationCommandOptionType.Role,
             name: "role",
             description: "The role to link (I will assign this role to users who send messages in the channel)",
+            required: true,
         },
     ],
     handler: async (interaction) => {
