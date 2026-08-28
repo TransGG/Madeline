@@ -7,6 +7,7 @@ import {
     PermissionFlagsBits,
     TextInputStyle,
 } from "discord.js";
+import { assertRolePermissionsOver } from "lib/utils.ts";
 
 export default new SlashCommand({
     name: "post-agreement-channel-message",
@@ -22,8 +23,9 @@ export default new SlashCommand({
             required: true,
         },
     ],
-    handler: async (interaction) => {
+    async handler(interaction) {
         const role = interaction.options.getRole("role", true);
+        await assertRolePermissionsOver(interaction, role);
 
         await interaction.showModal({
             customId: `::post-agreement:${role.id}`,

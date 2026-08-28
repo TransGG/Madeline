@@ -14,7 +14,7 @@ export default new Subcommand({
             required: true,
         },
     ],
-    handler: async (interaction) => {
+    async handler(interaction) {
         assert(interaction.guild);
 
         const channel = interaction.options.getChannel("channel", true);

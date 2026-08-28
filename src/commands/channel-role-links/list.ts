@@ -5,7 +5,7 @@ import assert from "node:assert";
 export default new Subcommand({
     name: "list",
     description: "List currently linked channels and roles.",
-    handler: async (interaction) => {
+    async handler(interaction) {
         assert(interaction.guild);
 
         const links = await listChannelRoleLinks();

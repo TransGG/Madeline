@@ -1,23 +1,13 @@
 export interface SelfSelectableRole {
     /** The ID of the role to allow users to self-assign */
     roleId: string;
-    /** The label of the option in the dropdown for this role's group */
-    dropdownLabel: string;
     /** The ID of the emoji of the option in the dropdown for this role's group */
-    dropdownEmojiId: string;
+    dropdownEmojiId?: string;
 }
 
 export interface RoleCategory {
     /** The category (internal only) of roles */
-    category: string;
-    /** An array of role IDs such that a user must have at least one of these roles to self-assign from this category */
-    allowedRoleIds: string[];
-    /** The label of the option in the dropdown for selecting this category from the root */
-    dropdownLabel: string;
-    /** The description of the option in the dropdown for selecting this category from the root */
-    dropdownDescription: string;
-    /** The ID of the emoji of the option in the dropdown for selecting this category from the root */
-    dropdownEmojiId: string;
+    category: "color" | "icon";
     /** The list of roles in this category */
     roles: SelfSelectableRole[];
 }

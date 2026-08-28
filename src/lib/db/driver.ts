@@ -1,7 +1,7 @@
 import { MongoClient, type CollectionOptions, type Document } from "mongodb";
 
 const client = new MongoClient(Bun.env.MONGODB_URI!);
-await client.connect();
+client.connect();
 
 const db = client.db();
 
@@ -9,4 +9,4 @@ export function getMongoCollection<T extends Document>(name: string, options?: C
     return db.collection<T>(name, options);
 }
 
-export const session = client.startSession();
+export const withSession = client.withSession.bind(client);
